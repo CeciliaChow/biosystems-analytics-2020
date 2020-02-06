@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""Two positional arguments"""
+"""
+Author : ceciliachow
+Date   : 2020-02-06
+Purpose: Rock the Casbah
+"""
 
 import argparse
-
+import os
+import sys
 
 # --------------------------------------------------
 def get_args():
@@ -42,8 +47,8 @@ def main():
 
     if count == len(args.text):
         print(f'"{args.vowel}" is not found in "{args.text}".')
-    # --------------------------------------------------
-    # if __name__ == '__main__':
 
 
-main()
+# --------------------------------------------------
+if __name__ == '__main__':
+    main()
