@@ -35,13 +35,13 @@ def main():
 
     for x in range(len(args.text)):
         if args.text[x] == args.vowel:
-            print(f'Found "{args.vowel}" in "{args.text}" at index {x}')
+            print(f'Found "{args.vowel}" in "{args.text}" at index {x}.')
             count = count - 1
         else:
             continue
 
     if count == len(args.text):
-        print(f'"{args.vowel}" is not found in "{args.text}"')
+        print(f'"{args.vowel}" is not found in "{args.text}."')
     # --------------------------------------------------
     # if __name__ == '__main__':
 
