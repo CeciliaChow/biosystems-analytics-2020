@@ -41,7 +41,7 @@ def main():
             continue
 
     if count == len(args.text):
-        print(f'"{args.vowel}" is not found in "{args.text}."')
+        print(f'"{args.vowel}" is not found in "{args.text}".')
     # --------------------------------------------------
     # if __name__ == '__main__':
 
