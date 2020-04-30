@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""Hello Ken, I have tried really hard to understand what the assignment is asking us to do. However, after a long
-digestion I still find it confusing. The main difficulty for me is I am confused what the assignment wants us to write
- in the output. I completed all get_args part but even spending more than the request time (I have spent more than 6 hrs
- to read other related information still I am not following what the task of this program is. I feel really bad as this
-  breaks my track record handing in all assignments and got the program passed all tests before class every time but not
- this time."""
+"""Dear Ken, after today class, I am more comfortable with coding this program.
+Although I have a trouble passing the test, I feel like I have learnt a lot
+from coding this. I was hoping to get some credits form handing in still
+as I have been working really hard for this."""
 
 
 import argparse
@@ -27,19 +25,21 @@ def get_args():
     parser.add_argument('FILE',
                         metavar='FILE',
                         type=argparse.FileType('r'),
-                        help='SwissProt file')
+                        help='Swiss file')
 
     parser.add_argument('-k',
                         '--keyword',
                         metavar='keyword',
                         type=str,
                         required=True,
+                        nargs=+,
                         help='Keyword to take')
 
     parser.add_argument('-s',
                         '--skiptaxa',
                         metavar='[taxa [taxa ...]]',
                         type=str,
+                        nargs='*',
                         help='Taxa to skip')
 
     parser.add_argument('-o',
@@ -57,8 +57,33 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
+    keyword= args.keyword.lower()
+    skip_taxa = set(map(str.lower,args.skiptaxa or []))
+    num_skipped = 0
+    num_taken = 0
 
-    print('hi')
+    for rec in SeqI0.parse(args.file, 'swiss')
+        annot = rec.annotations
+
+        if skip_taxa and 'taxonomy' in annot:
+            taxa = set (map(str.lower,taxa),annot['taxonomy'])
+            if skip_taxa.intersection(taxa):
+            num_skipped += 1
+            continue
+
+        if 'keywords' in annot:
+        kw = set(map(str.lower,annot['keywords']))
+
+        if keyword in kw:
+            num_taken += 1
+            SeqIO.write(rec, args.outfile,'fasta')
+        else:
+            num_skipped +=1
+
+        break
+
+    print (f'Done, skipped {num_skipped} and took {num_taken}.'
+        f'Sees output in "{args.outfile.name}".')
 
 
 # --------------------------------------------------
