@@ -18,7 +18,7 @@ def get_args():
     """Get command-line arguments"""
 
     parser = argparse.ArgumentParser(
-        description='Filter SwissProt file for keywords, taxa',
+        description='Filter SwissPort file for keywords, taxa',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('FILE',
@@ -56,33 +56,36 @@ def main():
     """Make a jazz noise here"""
 
     args = get_args()
-    keyword = args.keyword.lower()
+    keyword = set(map(str.lower, args.keyword))
     skip_taxa = set(map(str.lower, args.skiptaxa or []))
     num_skipped = 0
     num_taken = 0
 
-    for rec in SeqI0.parse(args.file, 'swiss'):
+    out_fh = open(args.outfile, "wt")
+
+    for rec in SeqIO.parse(args.FILE, 'swiss'):
         annot = rec.annotations
 
         if skip_taxa and 'taxonomy' in annot:
-            taxa = set(map(str.lower, taxa), annot['taxonomy'])
+            taxa = set(map(str.lower, annot['taxonomy']))
             if skip_taxa.intersection(taxa):
                 num_skipped += 1
-            continue
+                continue
 
-        if 'keywords' in annot:
-            kw = set(map(str.lower, annot['keywords']))
+        keywords = annot.get('keywords')
 
-        if keyword in kw:
-            num_taken += 1
-            SeqIO.write(rec, args.outfile, 'fasta')
-        else:
-            num_skipped += 1
+        if keywords:
+            keywords = set(map(str.lower, keywords))
+            if keyword.intersection(keywords):
+                num_taken += 1
+                SeqIO.write(rec, out_fh, 'fasta')
+            else:
+                num_skipped += 1
 
-        break
+    out_fh.close()
 
     print(f'Done, skipped {num_skipped} and took {num_taken}.'
-          f'Sees output in "{args.outfile.name}".')
+          f' See output in "{args.outfile}".')
 
 
 # --------------------------------------------------
